@@ -1,0 +1,32 @@
+e-learning
+Cover Page
+    Bottons
+        -Home
+        -Login
+            -submit data to server using post method, 
+            on recieved query record from user's database that matches submited email,
+            using Sequelize.
+            -Dont have an account sign up
+                -include level of educ using <select>
+        -About us(contacts)
+    
+    Transitional images/messages
+    Footer
+
+Home
+    Nav
+        -fav ico
+        -Name of platform
+        -Courses
+        -Search field
+        -
+        -
+
+    Cards(University)
+     -each card with a category: business, sports, medicine, educ, comp science, IT ...
+     onClick displays the diff courses of each category (ordered list)
+     And one click displays list of notes sorted by year & semester
+
+    Cards(HS)
+        -Choose level
+        O'level (compulsory subs left aligned & optional right aligned)
