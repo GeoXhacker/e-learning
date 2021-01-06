@@ -1,16 +1,22 @@
-const userModel = require("../models/users");
+// const userModel = require("../models/users");
 const router = require("express").Router();
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 const { secret } = require('../config.json');
+const studentModel = require('../models/mongodb')
 
 function createUser(data){
-   let user = userModel.build(data);
-   return user.save();
-}
+
+let user = new studentModel(data);
+    return user.save();   //also add the return coz its a promise
+ 
+//    let user = userModel.build(data);
+//   return user.save();
+};
 
 function getUserByEmail(email){
-    return userModel.findOne({
+    // return studentModel.find({ email: email })
+    return studentModel.findOne({
         where: {
             email: email
         }
@@ -58,6 +64,7 @@ router.post("/signup", (req, res) => {
     let userInfo = req.body;
 
     getUserByEmail(userInfo.email).then((result) => {
+        console.log (result);
         if(result){
             res.json({
                 success: false,
@@ -81,6 +88,7 @@ router.post("/signup", (req, res) => {
             })
         }
     }).catch((error) => {
+        console.log(error);
         res.json({
             success: false,
             message: 'something went wrong'

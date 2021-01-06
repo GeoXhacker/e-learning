@@ -8,6 +8,7 @@ var apiRouter = require('./routes/api');
 var jwt = require('jsonwebtoken');
 const { secret } = require('./config.json');
 var app = express();
+require('./mongodb');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
