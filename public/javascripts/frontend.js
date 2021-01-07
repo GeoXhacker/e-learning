@@ -5,11 +5,11 @@ $(document).ready(function(){
     });
     
     $("#signup").on('click', function(e){
-        let username = $("#inputName").val();
+        let name = $("#inputName").val();
         let email = $("#inputEmail").val();
         let password = $("#inputPassword").val();
         let data = {
-            username, password, email
+            name, password, email
         };
 
         let flashMsg = $("#flashMessage");

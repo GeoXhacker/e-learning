@@ -14,14 +14,15 @@ let user = new studentModel(data);
 //   return user.save();
 };
 
-function getUserByEmail(email){
-    // return studentModel.find({ email: email })
-    return studentModel.findOne({
-        where: {
-            email: email
-        }
-    });
-};
+// function getUserByEmail(email){
+//     // return studentModel.find({ email: email })
+//     return studentModel.findOne({
+//         where: {
+//             email: email
+//         }
+//     });
+
+// };
 
 function Auth(res, user) {
     var token = jwt.sign({
@@ -38,9 +39,10 @@ function Auth(res, user) {
 
 router.post('/login', (req, res) => {
     let data = req.body;
-    getUserByEmail(data.email).then((result) => {
-        const password = passwordHash.verify(data.password, result.password);
-        if(password){
+    console.log(data)
+    studentModel.findOne({ email: data.email }, (err, result) => {       
+        if(result){
+            passwordHash.verify(data.password, result.password);
            let token = Auth(res, result);
             res.json({
                 success: true,
@@ -52,20 +54,37 @@ router.post('/login', (req, res) => {
                 message: "Login Failed, incorrect email or password"
             })
         }
-    }).catch(() => {
-        res.json({
-            success: false,
-            message: `No account found with ${data.email}`
-        })
     })
+
+    // getUserByEmail(data.email).then((result) => {
+    //     console.log(result)
+    //     const password = passwordHash.verify(data.password, result.password);
+    //     if(password){
+    //        let token = Auth(res, result);
+    //         res.json({
+    //             success: true,
+    //             message: "Login Successful"
+    //         })
+    //     } else {
+    //         res.json({
+    //             success: false,
+    //             message: "Login Failed, incorrect email or password"
+    //         })
+    //     }
+    // }).catch(() => {
+    //     res.json({
+    //         success: false,
+    //         message: `No account found with ${data.email}`
+    //     })
+    // })
 });
 
 router.post("/signup", (req, res) => {
     let userInfo = req.body;
 
-    getUserByEmail(userInfo.email).then((result) => {
-        console.log (result);
+    studentModel.findOne({ email: userInfo.email }, (err, result) => {
         if(result){
+            console.log(result)
             res.json({
                 success: false,
                 message: "Email already used"
@@ -87,17 +106,45 @@ router.post("/signup", (req, res) => {
                 })
             })
         }
-    }).catch((error) => {
-        console.log(error);
-        res.json({
-            success: false,
-            message: 'something went wrong'
-        })
+    
     })
 });
 
+//     getUserByEmail(userInfo.email).then((result) => {
+//         console.log (result);
+//         if(result){
+//             res.json({
+//                 success: false,
+//                 message: "Email already used"
+//             })
+//         } else {
+//             createUser({
+//                 ...userInfo,
+//                 password: passwordHash.generate(userInfo.password)
+//             }).then((result) => {
+//                 let token = Auth(res, result);
+//                 res.json({
+//                     success: true,
+//                     message: 'Account Successfull Created'
+//                 })
+//             }).catch(() => {
+//                 res.json({
+//                     success: false,
+//                     message: 'Sign up failed, please correct the provided information'
+//                 })
+//             })
+//         }
+//     }).catch((error) => {
+//         console.log(error);
+//         res.json({
+//             success: false,
+//             message: 'something went wrong'
+//         })
+//     })
+// });
+
 router.get('/users', (req, res) => {
-    userModel.findAll().then((users) => {
+    studentModel.find().then((users) => {
         res.json(users);
     }); 
 });
